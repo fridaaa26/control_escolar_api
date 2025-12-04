@@ -6,12 +6,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Mantén la clave secreta en variables de entorno en producción
 SECRET_KEY = '-_&+lsebec(whhw!%n@ww&1j=4-^j_if9x8$q778+99oz&!ms2'
 
-DEBUG = True  # en desarrollo
+DEBUG = False  # en desarrollo
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'control-escolar-api-uq4t.onrender.com'
+    'control-escolar-api-uq4t.onrender.com',
+    '.onrender.com'
 ]
 
 INSTALLED_APPS = [

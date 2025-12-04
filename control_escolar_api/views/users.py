@@ -21,6 +21,7 @@ class AdminAll(generics.CreateAPIView):
         return Response(lista, 200)
 
 class AdminView(generics.CreateAPIView):
+    serializer_class = UserSerializer
     # Permisos por método (sobrescribe el comportamiento default)
     # Verifica que el usuario esté autenticado para las peticiones GET, PUT y DELETE
     def get_permissions(self):
