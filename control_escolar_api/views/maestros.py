@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404
 
 
 class MaestrosAll(generics.CreateAPIView):
+    serializer_class = MaestroSerializer
     # Necesita permisos de autenticación de usuario para poder acceder a la petición
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, *args, **kwargs):
@@ -27,6 +28,7 @@ class MaestrosAll(generics.CreateAPIView):
         return Response(lista, 200)
     
 class MaestrosView(generics.CreateAPIView):
+    serializer_class = MaestroSerializer
     # Permisos por método (sobrescribe el comportamiento default)
     # Verifica que el usuario esté autenticado para las peticiones GET, PUT y DELETE
     def get_permissions(self):

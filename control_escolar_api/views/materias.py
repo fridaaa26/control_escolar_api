@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 import json
 
 class MateriasAll(generics.ListAPIView):
+    serializer_class = MateriaSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
@@ -164,7 +165,15 @@ class MateriasView(generics.CreateAPIView):
         materia.salon = request.data.get("salon")
         materia.programa_educativo = request.data.get("programa_educativo")
         materia.creditos = request.data.get("creditos")
-        materia.maestro_id = request.data.get("maestro_id")
+        
+        # Actualizar profesor
+        profesor_id = request.data.get("maestro_id") or request.data.get("profesor_id")
+        if profesor_id:
+            try:
+                profesor = Maestros.objects.get(pk=profesor_id)
+                materia.profesor = profesor
+            except Maestros.DoesNotExist:
+                pass
 
         materia.save()
 
