@@ -43,6 +43,7 @@ MIDDLEWARE = [
 
 # Configuración de CORS: define orígenes permitidos y quita CORS_ORIGIN_ALLOW_ALL
 CORS_ALLOWED_ORIGINS = [
+    "https://control-escolar-webapp-frida-iubm.vercel.app",
     'http://localhost:4200',
 ]
 CORS_ALLOW_CREDENTIALS = True
@@ -96,7 +97,7 @@ if DATABASE_URL:
         )
     }
 else:
-    # 🟢 Local (MySQL con my.cnf)
+    # Local (MySQL con my.cnf)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
