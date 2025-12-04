@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,6 +25,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',     # CORS debe ir antes de CommonMiddleware
     'django.middleware.common.CommonMiddleware',
@@ -53,6 +55,11 @@ STATIC_URL = "/static/"
 # TEMPLATES[0]["DIRS"] = [os.path.join(BASE_DIR, "templates")]
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -71,15 +78,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'control_escolar_api.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': os.path.join(BASE_DIR, "my.cnf"),
-            'charset': 'utf8mb4',
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    # 🟣 Render / producción
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
+    }
+else:
+    # 🟢 Local (MySQL con my.cnf)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'OPTIONS': {
+                'read_default_file': os.path.join(BASE_DIR, "my.cnf"),
+                'charset': 'utf8mb4',
+            }
         }
     }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},

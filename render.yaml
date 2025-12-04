@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: control-escolar-api
+    env: python
+    region: ohio
+    plan: free
+    branch: main
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn control_escolar_api.wsgi:application"
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10
+      - key: DJANGO_SETTINGS_MODULE
+        value: control_escolar_api.settings
+      - key: DATABASE_URL
+        fromDatabase:
+          name: control-escolar-db
+          property: connectionString
+
+databases:
+  - name: control-escolar-db
+    plan: free
+    region: ohio
